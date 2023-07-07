@@ -5,66 +5,26 @@ import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 
-import Modal from "../modal/modal";
-import OrderDetails from "../order-details/order-details";
-import IngredientDetails from "../ingredient-details/ingredient-details";
-
-import { api } from "../../utils/constants";
+import { getIngredients } from "../../utils/burger-api";
 
 function App() {
-  const [apiData, setApiData] = React.useState([]);
-  const [orderVisible, setOrderVisible] = React.useState(false);
-  const [ingredientVisible, setIngredientVisible] = React.useState(false);
-  const [currentIngredient, setCurrentIngredient] = React.useState({});
+  const [ingredients, setIngredients] = React.useState([]);
+  const [error, setError] = React.useState("");
 
   React.useEffect(() => {
-    fetch(api)
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка ${res.status}`);
-      })
-      .then((data) => setApiData(data.data))
-      .catch((e) => {
-        console.log("Error: " + e.message);
-      });
+    getIngredients()
+      .then(setIngredients)
+      .catch((e) => setError("Ошибка: " + e.message));
   }, []);
-
-  const closeModal = () => {
-    setOrderVisible(false);
-    setIngredientVisible(false);
-  };
-
-  const openOrderModal = () => {
-    setOrderVisible(true);
-  };
-
-  const openIngredientModal = (item) => {
-    setCurrentIngredient({ ...item });
-    setIngredientVisible(true);
-  };
 
   return (
     <div className="app mt-10">
       <AppHeader />
       <main className={appStyle.main}>
-        <BurgerIngredients
-          ingredients={apiData}
-          openModal={openIngredientModal}
-        />
-        <BurgerConstructor ingredients={apiData} openModal={openOrderModal} />
-        {orderVisible && (
-          <Modal header={""} onClose={closeModal}>
-            <OrderDetails />
-          </Modal>
-        )}
-        {ingredientVisible && (
-          <Modal header="Детали ингредиента" onClose={closeModal}>
-            <IngredientDetails currentIngredient={currentIngredient} />
-          </Modal>
-        )}
+        <BurgerIngredients ingredients={ingredients} />
+        <BurgerConstructor ingredients={ingredients} />
       </main>
+      {error && <div>{error}</div>}
     </div>
   );
 }
