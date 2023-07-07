@@ -1,0 +1,45 @@
+.header {
+  max-width: 1920px;
+  width: 100%;
+  margin: 0 auto;
+  background: #1c1c21;
+  box-sizing: border-box;
+}
+
+.nav {
+  position: relative;
+  display: flex;
+  align-items: center;
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  box-sizing: border-box;
+  text-decoration: none;
+}
+
+.button:last-child {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.button_text {
+  display: block;
+  color: #8585ad;
+}
+
+.button_text_active {
+  color: #f2f2f3;
+}
+
+.logo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
